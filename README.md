@@ -2,7 +2,9 @@
 
 Hardened, single-file fork of [tanabe/markdown-live-preview](https://github.com/tanabe/markdown-live-preview) (MIT), the engine behind markdownlivepreview.com.
 
-**Use:** double-click `offline-md-preview.html` (Edge/Chrome). Open or drag-drop a `.md` file.
+**Use:** double-click `offline-md-preview.html` (Edge/Chrome). Open or drag-drop a `.md` file, or an Unstructured.io elements `.json` file.
+
+**Unstructured JSON:** converted to Markdown in the browser using the same rules as the team's `elements_json_to_markdown.py` (Table -> `text_as_html`, Image -> `data:` URI, Title -> `# `, else text). Output is byte-identical to the script.
 
 ## What changed vs. markdownlivepreview.com
 | Risk on hosted site | This build |

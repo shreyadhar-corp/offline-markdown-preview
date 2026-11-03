@@ -13,7 +13,7 @@ const SETTINGS_KEY = 'offline-md-preview.settings'; // UI settings only, never c
 
 const defaultInput = `# Offline Markdown Preview
 
-Open a \`.md\` file with **Open**, or drag and drop it anywhere on this window.
+Open a \`.md\` file, or an Unstructured.io \`.json\` output (converted automatically), with **Open**, or drag and drop it anywhere on this window.
 
 - Runs entirely from this one file; nothing is uploaded.
 - The page's Content Security Policy blocks every network request.
@@ -41,6 +41,34 @@ DOMPurify.addHook('afterSanitizeAttributes', (node) => {
         if (v !== null && v !== undefined && !/^\s*(data|blob):/i.test(v)) node.removeAttribute(attr);
     }
 });
+
+// Unstructured.io elements JSON -> Markdown. Mirrors the team's
+// elements_json_to_markdown.py: tables keep text_as_html, images become
+// data: URIs, Titles become "# ", everything else is its text.
+const SAFE_MIME = /^image\/[a-z0-9.+-]+$/i;
+const elementsToMarkdown = (data) => {
+    const elements = Array.isArray(data) ? data : data && Array.isArray(data.elements) ? data.elements : null;
+    if (!elements) throw new Error('Expected a JSON array of Unstructured elements.');
+    const blocks = [];
+    for (const el of elements) {
+        if (!el || typeof el !== 'object') continue;
+        const type = el.type;
+        const meta = (el.metadata && typeof el.metadata === 'object') ? el.metadata : {};
+        if (type === 'Table' && meta.text_as_html) {
+            blocks.push(String(meta.text_as_html));
+        } else if (type === 'Image' && meta.image_base64) {
+            const mime = SAFE_MIME.test(meta.image_mime_type || '') ? meta.image_mime_type : 'image/png';
+            const b64 = String(meta.image_base64).replace(/[^A-Za-z0-9+/=]/g, '');
+            blocks.push(`![image](data:${mime};base64,${b64})`);
+        } else if (type === 'Title') {
+            blocks.push(`# ${el.text ?? ''}`);
+        } else {
+            blocks.push(String(el.text ?? ''));
+        }
+    }
+    return blocks.join('\n\n');
+};
+const looksLikeJson = (name, text) => /\.json$/i.test(name) || /^\s*[\[{]/.test(text);
 
 const init = () => {
     const settings = loadSettings();
@@ -150,11 +178,22 @@ const init = () => {
 
     const openFile = async (file) => {
         if (!file) return;
+        let text;
         try {
-            presetValue(await file.text(), file.name);
+            text = await file.text();
         } catch {
             window.alert('Unable to read this file.');
+            return;
         }
+        if (looksLikeJson(file.name, text)) {
+            try {
+                presetValue(elementsToMarkdown(JSON.parse(text)), `${file.name} → Markdown`);
+            } catch (err) {
+                window.alert(`Could not convert this JSON: ${err.message}`);
+            }
+            return;
+        }
+        presetValue(text, file.name);
     };
 
     const openBtn = document.querySelector('#open-button');

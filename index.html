@@ -17,7 +17,7 @@
         <div id="menu-items">
             <div class="brand">Markdown Preview <span id="offline-badge" title="Content Security Policy blocks all network access. Content is never saved.">● Offline</span></div>
             <div><button type="button" id="open-button">Open</button></div>
-            <input type="file" id="open-file-input" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden>
+            <input type="file" id="open-file-input" accept=".md,.markdown,.txt,.json,text/markdown,text/plain,application/json" hidden>
             <div><button type="button" id="copy-button">Copy</button></div>
             <div><button type="button" id="export-button">Export PDF</button></div>
             <div><button type="button" id="reset-button">Clear</button></div>
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div id="drop-overlay">Drop .md file to open</div>
+    <div id="drop-overlay">Drop .md or Unstructured .json file to open</div>
 
     <script type="module" src="/src/main.js"></script>
   </body>

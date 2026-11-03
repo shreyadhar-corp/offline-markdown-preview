@@ -61,37 +61,6 @@ header a:hover {
     display: flex;
 }
 
-#open-button {
-    margin-left: 16px;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-}
-
-#open-button:hover {
-    text-decoration: underline;
-}
-
-#open-button:disabled {
-    opacity: 0.6;
-    cursor: wait;
-}
-
-#reset-button {
-    margin-left: 16px;
-}
-
-#copy-button {
-    margin-left: 16px;
-}
-
-#export-button {
-    margin-left: 16px;
-}
-
 #sync-button {
     margin-left: 16px;
     -webkit-user-select: none;
@@ -104,20 +73,6 @@ header input[type="checkbox"] {
     vertical-align: middle;
     margin-right: 4px;
     margin-top: 0px;
-}
-
-#github {
-    padding-right: 32px;
-}
-
-#github img {
-  display: block;
-  width: 16px;
-}
-
-#github a {
-  display: block;
-  width: 16px;
 }
 
 footer {
@@ -165,19 +120,6 @@ footer {
 #preview.column {
   overflow-y: scroll;
   white-space: normal;
-}
-
-.markdown-body .mermaid {
-  overflow-x: auto;
-  padding: 16px;
-  text-align: center;
-}
-
-.markdown-body .mermaid svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
 }
 
 /* Print/PDF export */
@@ -230,27 +172,6 @@ footer {
     max-width: 100%;
   }
 
-  .markdown-body .mermaid {
-    width: 100%;
-    max-width: 100%;
-    overflow: visible;
-    padding: 12px 0;
-    margin: 16px 0;
-    text-align: center;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .markdown-body .mermaid svg {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    margin: 0 auto;
-    color-scheme: light;
-    background: #fff;
-  }
-
   /* Keep section titles with the opening content of their section. */
   .markdown-body h1,
   .markdown-body h2,
@@ -285,16 +206,6 @@ footer {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-}
-
-.markdown-body .mermaid-error {
-  color: #cf222e;
-  white-space: pre-wrap;
-  text-align: left;
-}
-
-[data-theme="dark"] .markdown-body .mermaid-error {
-  color: #ff7b72;
 }
 
 .split-container {
@@ -358,3 +269,29 @@ footer {
 [data-theme="dark"] footer {
   background-color: #333;
 }
+
+/* ---- offline fork additions ---- */
+header { box-sizing: border-box; }
+#menu-items { align-items: center; }
+#menu-items > div { margin-left: 16px; }
+#menu-items > div.brand { margin-left: 0; font-weight: bold; }
+header button {
+  padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer;
+}
+header button:hover { text-decoration: underline; }
+#offline-badge {
+  margin-left: 8px; padding: 1px 6px; border-radius: 8px;
+  background: #1f6f3f; color: #d6ffe4; font-weight: normal; font-size: 11px;
+}
+#file-name { opacity: .85; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40vw; }
+#preview-wrapper { padding: 8px 24px 24px 24px; }
+.markdown-body table { display: table; width: max-content; max-width: 100%; }
+.markdown-body table td, .markdown-body table th { vertical-align: top; }
+#drop-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(30, 60, 110, .55); color: #fff; font-size: 22px;
+  align-items: center; justify-content: center; border: 4px dashed #fff; pointer-events: none;
+}
+#drop-overlay.visible { display: flex; }
+
+.markdown-body p { margin: 0 0 16px 0; }

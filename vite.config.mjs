@@ -1,19 +1,14 @@
-import { resolve } from 'node:path';
-import { cssFiles, updateCssVersions } from './scripts/update-css-version.mjs';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 
+// Builds everything (JS, CSS, fonts) into one self-contained dist/index.html
+// that runs from file:// with no network access.
 export default {
-    plugins: [{
-        name: 'update-css-versions',
-        buildStart() {
-            updateCssVersions();
-        },
-        configureServer(server) {
-            server.watcher.add(cssFiles);
-            server.watcher.on('change', path => {
-                if (cssFiles.includes(resolve(path))) {
-                    updateCssVersions();
-                }
-            });
-        }
-    }]
+    base: './',
+    plugins: [viteSingleFile({ removeViteModuleLoader: true })],
+    build: {
+        assetsInlineLimit: 100_000_000,
+        cssCodeSplit: false,
+        modulePreload: false,
+        sourcemap: false,
+    },
 };

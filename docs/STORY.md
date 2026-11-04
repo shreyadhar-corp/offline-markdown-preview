@@ -22,7 +22,7 @@ As an engineer validating Unstructured.io extraction, I want to view the output 
 
 - **What it is:** a single offline HTML file forked from the site's open-source code ([tanabe/markdown-live-preview](https://github.com/tanabe/markdown-live-preview), MIT).
 - **Security changes:** analytics removed; all network access blocked by a Content Security Policy; content never stored; outside resources stripped; links blocked; libraries updated.
-- **New feature:** opens Unstructured JSON directly, replacing the Python conversion step.
+- **New feature:** the online viewer only opened Markdown (`.md`) files, so Unstructured JSON had to be converted with a Python script first. This version also opens Unstructured `.json` output directly and converts it to Markdown in the browser (tables, images, titles and text), with output identical to the script. That removes the conversion step. It still opens `.md` files, plus `.txt`.
 
 ## Out of scope
 
